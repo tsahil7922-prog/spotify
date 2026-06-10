@@ -1,61 +1,23 @@
 const express = require("express");
 
 // schema and model
-const noteModel = require("./model/node.model");
+const noteModel = require("./model/post.model");
+const multer = require("multer");
+const uploadFile = require("./services/storage.service");
 
 // creating express app
-
 const app = express();
-app.use(express.json());
+
 // middleware
-// It parses incoming requests with a JSON body and converts the JSON into a JavaScript object available in req.body.
+app.use(express.json()); // It parses incoming requests with a JSON body and converts the JSON into a JavaScript object available in req.body.
+
+const upload = multer({ storage: multer.memoryStorage() }); // multer is a middleware for handling multipart/form-data, which is primarily used for uploading files. In this code, multer is configured to use memory storage, meaning that the uploaded files will be stored in memory as Buffer objects rather than being saved to disk. This allows for easy access to the file data within the application without needing to manage file storage on the server.
 
 // post
-// async function is used to handle asynchronous operations, such as database interactions,(like we store the data to data base how much time it aquire we dont know so we use async)
-app.post("/notes", async (req, res) => {
-  console.log("hiiiiiiiiiii");
-  try {
-    const data = req.body;
-    await noteModel.create({
-      title: data.title,
-      description: data.description,
-    });
-    res.status(201).json({ message: "Note created successfully" });
-  } catch (err) {
-    console.error(err); // ← check your terminal
-    res.status(500).json({ error: err.message }); // ← check Postman/browser
-  }
-});
-
-// get
-app.get("/notes", async (req, res) => {
-  const notes = await noteModel.find(); // find() is a method provided by Mongoose that retrieves all documents from the "notes" collection in the MongoDB database. It returns an array of note objects that match the query criteria
-  res.status(200).json({ message: "Notes fetched successfully", data: notes });
-});
-
-// delete
-app.delete("/notes/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    await noteModel.findByIdAndDelete({ _id: id });
-    res.status(200).json({ message: "Note deleted successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// patch
-app.patch("/notes/:id", async (req, res) => {
-  const id = req.params.id;
-  const description = req.body.description;
-  const updatredValue = await noteModel.findByIdAndUpdate(
-    { _id: id },
-    { description: description },
-  );
-  res
-    .status(200)
-    .json({ message: "Note updated successfully", data: updatredValue });
+app.post("/create-post", upload.single("image"), async (req, res) => {
+  // console.log(req.body);
+  const result = await uploadFile(req.file.buffer);
+  console.log(result)
 });
 
 module.exports = app;
