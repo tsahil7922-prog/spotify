@@ -15,9 +15,11 @@ const upload = multer({ storage: multer.memoryStorage() }); // multer is a middl
 
 // post
 app.post("/create-post", upload.single("image"), async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
+   console.log(req.file);
   const result = await uploadFile(req.file.buffer);
   console.log(result)
+  res.json(result);
 });
 
 module.exports = app;
