@@ -1,7 +1,7 @@
 const express = require("express");
-
+require("dotenv").config();
 // schema and model
-const noteModel = require("./model/post.model");
+const postModel = require("./model/post.model");
 const multer = require("multer");
 const uploadFile = require("./services/storage.service");
 
@@ -15,11 +15,15 @@ const upload = multer({ storage: multer.memoryStorage() }); // multer is a middl
 
 // post
 app.post("/create-post", upload.single("image"), async (req, res) => {
-  console.log(req.body);
-   console.log(req.file);
+  // console.log(req.body);
+  // console.log(req.file);
   const result = await uploadFile(req.file.buffer);
-  console.log(result)
-  res.json(result);
+  // console.log(result)
+  const post = await postModel.create({
+    image: result.url,
+    caption: req.body.caption,
+  });
+  return res.status(201).json({ message: "Post created succesfully", post });
 });
 
 module.exports = app;
