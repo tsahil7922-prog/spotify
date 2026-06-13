@@ -1,13 +1,15 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 // schema and model
 const postModel = require("./model/post.model");
 const multer = require("multer");
 const uploadFile = require("./services/storage.service");
 
+
 // creating express app
 const app = express();
-
+app.use(cors());
 // middleware
 app.use(express.json()); // It parses incoming requests with a JSON body and converts the JSON into a JavaScript object available in req.body.
 
