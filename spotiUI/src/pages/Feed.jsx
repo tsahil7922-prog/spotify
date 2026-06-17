@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 const Feed = () => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      image: "https://ik.imagekit.io/is4qaoqo3/image_glvqfZF7N.jpg",
-      caption: "Beautiful sunset!",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:9000/posts")
       .then((res) => {
+        console.log(res.data.posts)
         setPosts(res.data.posts);
       })
       .catch((err) => {
