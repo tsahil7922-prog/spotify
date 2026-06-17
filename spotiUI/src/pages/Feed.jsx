@@ -5,9 +5,9 @@ const Feed = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/posts")
+      .get("http://localhost:9000/api/posts")
       .then((res) => {
-        console.log(res.data.posts)
+        console.log(res.data.posts);
         setPosts(res.data.posts);
       })
       .catch((err) => {
