@@ -8,7 +8,7 @@ const CreatePost = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     axios
-      .post("http://localhost:9000/create-post", formData)
+      .post("http://localhost:9000/api/create-post", formData)
       .then((res) => {
         // console.log(res.data);
         navigate("/feed");
