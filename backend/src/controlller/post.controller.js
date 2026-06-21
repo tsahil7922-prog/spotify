@@ -8,6 +8,7 @@ async function createPost(req, res) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
+  // verified or not
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
