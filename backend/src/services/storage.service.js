@@ -3,10 +3,11 @@ const imageKit = new IMAGE_KIT({
   privateKey: process.env.IMAGE_PRIVATE_KEY,
 });
 
-async function uploadFile(buffer, fileName) {
+async function uploadFile(file) {
   const response = await imageKit.files.upload({
-    file: buffer.toString("base64"),
-    fileName: "image.jpg",
+    file,
+    fileName:"music_" + Date.now(),
+    folder:"my-complete-journey/music"
   });
   return response;
 }

@@ -10,7 +10,7 @@ async function createPost(req, res) {
 
   // verified or not
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
   }
