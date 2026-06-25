@@ -7,6 +7,7 @@ import UploadMusic from "./pages/UploadMusic";
 import CreateAlbum from "./pages/CreateAlbum";
 import Albums from "./pages/Albums";
 import Profile from "./pages/Profile";
+import AlbumDetails from "./pages/AlbumDetails";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/upload" element={<UploadMusic />} />
         <Route path="/create-album" element={<CreateAlbum />} />
         <Route path="/albums" element={<Albums />} />
+        <Route path="/albums/:albumId" element={<AlbumDetails />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>

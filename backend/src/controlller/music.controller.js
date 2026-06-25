@@ -59,7 +59,11 @@ async function getAlbumById(req, res) {
   const album = await albumModal
     .findById(paramId)
     .populate("artists", "username email role")
-    .populate("musics");
+     .populate({
+      path: "musics",
+      select: "title url",
+    });
+    // .populate("musics");
 
   return res.status(200).json({ message: "Music fetched successfully", album });
 }
