@@ -19,20 +19,33 @@ async function regiterUser(req, res) {
     password: hash,
     role: role,
   });
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     { id: newUser._id, role: newUser.role },
     process.env.JWT_SECRET_KEY,
     {
       expiresIn: "1h",
     },
   );
-  res.cookie("token", token, {
+
+  const refreshToken = jwt.sign(
+    { id: newUser._id, role: newUser.role },
+    process.env.JWT_REFRESH_SECRET_KEY,
+    {
+      expiresIn: "7d",
+    },
+  );
+
+  res.cookie("accessToken", accessToken, {
     httpOnly: true, // This flag ensures that the cookie cannot be accessed via JavaScript, providing protection against cross-site scripting (XSS) attacks.
     secure: true, // This flag ensures that the cookie is only sent over HTTPS connections, providing an additional layer of security.
     sameSite: "strict", // This flag restricts the cookie to be sent only in a first-party context, preventing it from being sent along with cross-site requests, which can help mitigate cross-site request forgery (CSRF) attacks.
-    //jwt needs a object inside which user unique id is stored and a secret key to generate the token and also we can set expiry time for the token
+    //jwt needs a object inside which user unique id is stored and a secret key to generate the accessToken  and also we can set expiry time for the accessToken
   });
-
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  });
   return res
     .status(201)
     .json({ message: "User registered successfully", user: newUser });
@@ -51,12 +64,86 @@ async function loginUser(req, res) {
   if (!isPasswordValid) {
     return res.status(401).json({ message: "INvalid Credentials" });
   }
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "1h",
+    },
   );
 
+  const refreshToken = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_REFRESH_SECRET_KEY,
+    {
+      expiresIn: "7d",
+    },
+  );
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+  });
   res.status(200).json({ message: "User logged in Successfully", user });
 }
 
-module.exports = { regiterUser ,loginUser};
+async function refreshToken(req, res) {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({
+      message: "Refresh token missing",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET_KEY,
+    );
+
+    const newAccessToken = jwt.sign(
+      {
+        id: decoded.id,
+        role: decoded.role,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1h",
+      },
+    );
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
+
+    return res.status(200).json({
+      message: "Access token refreshed",
+    });
+  } catch (err) {
+    return res.status(401).json({
+      message: "Invalid refresh token",
+    });
+  }
+}
+
+
+
+async function logoutUser(req, res) {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+
+  return res.status(200).json({
+    message: "Logged out successfully",
+  });
+}
+module.exports = { regiterUser, loginUser, refreshToken,logoutUser   };

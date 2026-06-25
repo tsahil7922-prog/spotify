@@ -1,44 +1,73 @@
 const musicModel = require("../model/music.modal");
+const albumModal = require("../model/album.model");
 const jwt = require("jsonwebtoken");
-const uploadFile  = require("../services/storage.service");
+const uploadFile = require("../services/storage.service");
 const musicModal = require("../model/music.modal");
 
 async function createMusic(req, res) {
-  const token = req.cookies.token;
-  console.log(token);
-  if (!token) {
-    return res.status(401).json({ message: "Unautherized" });
-  }
+  const { title } = req.body;
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    if (decoded?.role !== "artist") {
-      return res
-        .status(403)
-        .json({ message: "You dont jave access to create music" });
-    }
+  const file = req.file;
 
-    const { title } = req.body;
+  const result = await uploadFile(file.buffer.toString("base64"));
+  const music = await musicModal.create({
+    url: result.url,
+    title,
+    artist: req.user.id,
+  });
 
-    const file = req.file;
-
-    const result = await uploadFile(file.buffer.toString("base64"));
-    const music = await musicModal.create({
-      url: result.url,
-      title,
-      artist: decoded.id,
-    });
-
-    return res
-      .status(201)
-      .json({ message: "Music created successfully", music });
-  } catch (err) {
-    console.log("ERROR:", err);
-    return res.status(401).json({
-      message: "Unauthorized",
-      error: err.message,
-    });
-  }
+  return res.status(201).json({ message: "Music created successfully", music });
 }
 
-module.exports = { createMusic };
+async function createAlbum(req, res) {
+  const { title, musics } = req.body;
+  const album = await albumModal.create({
+    title,
+    artists: req.user.id,
+    musics: musics,
+  });
+
+  console.log(req.user.id, "empty");
+  return res.status(201).json({
+    message: "Album created successfully",
+    album: {
+      id: album._id,
+      title: album.title,
+      artist: album.artists,
+      musics: album.musics,
+    },
+  });
+}
+
+async function getAllMusics(req, res) {
+  const allMusics = await musicModal.find().skip(0).limit(10);
+  res.status(200).json({ message: "Music fetched successfully", allMusics });
+}
+
+async function getAllAlbums(req, res) {
+  const allAlbum = await albumModal
+    .find()
+    .select("title musics")
+    .populate("artists", "username email role");
+    
+
+  res.status(200).json({ message: "Music fetched successfully", allAlbum });
+}
+
+async function getAlbumById(req, res) {
+  const paramId = req.params.albumId;
+  const album = albumModal
+    .findById(paramId)
+    .populate("artists", "username email role")
+    .populate("music");
+
+  return res.status(200).json({ message: "Music fetched successfully", album });
+}
+
+module.exports = {
+  createMusic,
+  createAlbum,
+  getAllMusics,
+  getAllAlbums,
+  getAlbumById,
+};

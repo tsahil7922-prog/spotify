@@ -1,16 +1,27 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import CreatePost from "./pages/CreatePost";
-import Feed from "./pages/Feed";
-const App = () => {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import UploadMusic from "./pages/UploadMusic";
+import CreateAlbum from "./pages/CreateAlbum";
+import Albums from "./pages/Albums";
+import Profile from "./pages/Profile";
+
+function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CreatePost/>} />
-         <Route path="/feed" element={<Feed/>} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/upload" element={<UploadMusic />} />
+        <Route path="/create-album" element={<CreateAlbum />} />
+        <Route path="/albums" element={<Albums />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;
