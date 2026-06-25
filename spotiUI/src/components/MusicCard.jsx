@@ -1,3 +1,4 @@
+import  "../styles/musiccard.css"
 const MusicCard = ({ music }) => {
   return (
     <div className="music-card">

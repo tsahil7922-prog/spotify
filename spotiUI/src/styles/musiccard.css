@@ -1,0 +1,31 @@
+.music-card{
+  background:var(--bg-card);
+  border-radius:16px;
+  padding:20px;
+  transition:.3s;
+  border:1px solid var(--border);
+}
+
+.music-card:hover{
+  transform:translateY(-5px);
+  background:#2d2d2d;
+}
+
+.music-icon{
+  font-size:3rem;
+  margin-bottom:15px;
+}
+
+.music-card h2{
+  font-size:1.1rem;
+  margin-bottom:8px;
+}
+
+.music-card p{
+  color:var(--text-secondary);
+  margin-bottom:15px;
+}
+
+.music-card audio{
+  width:100%;
+}

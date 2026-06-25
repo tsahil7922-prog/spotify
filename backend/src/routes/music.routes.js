@@ -18,16 +18,16 @@ router.post(
 
 router.post("/album", authMiddleware.authArtist, musicController.createAlbum);
 
-
-
-
-
 // for users only to get alll music data
-router.get("/",authMiddleware.authUser,musicController.getAllMusics)
+router.get("/", authMiddleware.authUser, musicController.getAllMusics);
 
-// 
-router.get("/albums",authMiddleware.authUser,musicController.getAllAlbums)
+//
+router.get("/albums", authMiddleware.authUser, musicController.getAllAlbums);
 
-router.get("/albums:id",authMiddleware.authUser,musicController.getAlbumById)
+router.get(
+  "/albums/:albumId",
+  authMiddleware.authUser,
+  musicController.getAlbumById,
+);
 
 module.exports = router;

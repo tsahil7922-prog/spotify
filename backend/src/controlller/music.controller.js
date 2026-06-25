@@ -56,10 +56,10 @@ async function getAllAlbums(req, res) {
 
 async function getAlbumById(req, res) {
   const paramId = req.params.albumId;
-  const album = albumModal
+  const album = await albumModal
     .findById(paramId)
     .populate("artists", "username email role")
-    .populate("music");
+    .populate("musics");
 
   return res.status(200).json({ message: "Music fetched successfully", album });
 }
