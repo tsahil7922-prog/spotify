@@ -29,3 +29,22 @@
 .music-card audio{
   width:100%;
 }
+
+
+.play-btn{
+  width:100%;
+  border:none;
+
+  background:#1db954;
+  color:white;
+
+  padding:12px;
+
+  border-radius:8px;
+
+  font-weight:600;
+}
+
+.play-btn:hover{
+  background:#1ed760;
+}
