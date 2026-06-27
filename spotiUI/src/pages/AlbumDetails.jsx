@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Loader from "../components/Loader";
+import { useMusic } from "../context/MusicContext";
+import "../styles/albumdetails.css";
 
 const AlbumDetails = () => {
   const { albumId } = useParams();
+  const { playSong } = useMusic();
 
   const [album, setAlbum] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,25 +40,78 @@ const AlbumDetails = () => {
     <>
       <Navbar />
 
-      <section className="page-container">
-        <h1>{album.title}</h1>
+      <section className="album-page">
 
-        <p>
-          Artist :
-          {album.artists?.[0]?.username}
-        </p>
+        <div className="album-banner">
 
-        <div className="music-grid">
-          {album.musics?.map((music) => (
-            <div key={music._id} className="music-card">
-              <h3>{music.title}</h3>
+          <div className="album-cover">
+            🎵
+          </div>
 
-              <audio controls>
-                <source src={music.url} />
-              </audio>
-            </div>
-          ))}
+          <div className="album-info">
+
+            <span className="album-type">Album</span>
+
+            <h1>{album.title}</h1>
+
+            <p>
+              {album.artists?.[0]?.username}
+            </p>
+
+            <p>
+              {album.musics?.length || 0} Songs
+            </p>
+
+            <button
+              className="album-play-btn"
+              onClick={() => playSong(album.musics[0])}
+            >
+              ▶ Play Album
+            </button>
+
+          </div>
+
         </div>
+
+        <div className="song-table">
+
+          <div className="song-header">
+
+            <span>#</span>
+
+            <span>Title</span>
+
+            <span>Artist</span>
+
+            <span></span>
+
+          </div>
+
+          {album.musics?.map((music, index) => (
+
+            <div
+              className="song-row"
+              key={music._id}
+            >
+
+              <span>{index + 1}</span>
+
+              <span>{music.title}</span>
+
+              <span>{music.artist?.username}</span>
+
+              <button
+                onClick={() => playSong(music)}
+              >
+                ▶
+              </button>
+
+            </div>
+
+          ))}
+
+        </div>
+
       </section>
     </>
   );

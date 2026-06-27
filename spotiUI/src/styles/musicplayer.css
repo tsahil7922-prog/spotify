@@ -1,33 +1,160 @@
-.player-bar{
-  position:fixed;
-  bottom:0;
-  left:0;
+.player{
+    position:fixed;
+    bottom:0;
+    left:0;
 
-  width:100%;
-  height:90px;
+    width:100%;
+    height:95px;
 
-  background:#181818;
+    background:#181818;
 
-  border-top:1px solid #2f2f2f;
+    border-top:1px solid #2e2e2e;
 
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 
-  padding:0 25px;
+    padding:15px 35px;
 
-  z-index:999;
+    z-index:1000;
 }
 
-.player-info h4{
-  margin-bottom:4px;
+/* LEFT */
+
+.player-left{
+    width:25%;
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
-.player-info p{
-  color:#b3b3b3;
-  font-size:.9rem;
+.cover{
+    width:60px;
+    height:60px;
+
+    background:#242424;
+
+    border-radius:10px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:30px;
 }
 
-.player-bar audio{
-  width:500px;
+.player-left h4{
+    margin:0;
+    color:white;
+}
+
+.player-left p{
+    margin-top:5px;
+    color:#b3b3b3;
+}
+
+/* CENTER */
+
+.player-center{
+
+    width:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+.player-controls{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+}
+
+.player-controls button{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    font-size:24px;
+
+    cursor:pointer;
+}
+
+.play-btn-circle{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#1db954 !important;
+
+    color:white;
+
+    font-size:20px;
+}
+
+.progress-area{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:12px;
+}
+
+.progress-area span{
+
+    color:#b3b3b3;
+
+    font-size:13px;
+
+    width:45px;
+}
+
+.progress-area input{
+
+    flex:1;
+
+    accent-color:#1db954;
+
+    cursor:pointer;
+}
+
+/* RIGHT */
+
+.player-right{
+
+    width:25%;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    color:white;
+
+    font-size:24px;
+}
+
+audio{
+    display:none;
+}
+
+/* Space because player is fixed */
+
+.page-container{
+    padding-bottom:130px;
 }

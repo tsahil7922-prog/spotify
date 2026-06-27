@@ -1,20 +1,34 @@
 import { useMusic } from "../context/MusicContext";
 import "../styles/musiccard.css";
+
 const MusicCard = ({ music }) => {
-  const { setCurrentSong } = useMusic();
-  return (
-    <div className="music-card">
-      <div className="music-icon">🎵</div>
 
-      <h2>{music.title}</h2>
+    const { playSong } = useMusic();
 
-      <p>{music.artist?.username}</p>
+    return (
 
-      <button className="play-btn" onClick={() => setCurrentSong(music)}>
-        ▶ Play
-      </button>
-    </div>
-  );
+        <div className="music-card">
+
+            <div className="music-image">
+
+                🎵
+
+            </div>
+
+            <h3>{music.title}</h3>
+
+            <p>{music.artist?.username}</p>
+
+            <button
+                className="play-button"
+                onClick={() => playSong(music)}
+            >
+                ▶ Play
+            </button>
+
+        </div>
+
+    );
 };
 
 export default MusicCard;

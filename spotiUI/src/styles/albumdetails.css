@@ -1,0 +1,168 @@
+.album-page{
+    padding:40px;
+    padding-bottom:130px;
+}
+
+.album-banner{
+
+    display:flex;
+    align-items:center;
+
+    gap:40px;
+
+    margin-bottom:50px;
+}
+
+.album-cover{
+
+    width:240px;
+
+    height:240px;
+
+    background:#282828;
+
+    border-radius:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:110px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.45);
+}
+
+.album-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
+.album-type{
+
+    color:#b3b3b3;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+}
+
+.album-info h1{
+
+    font-size:60px;
+
+    margin:0;
+
+    color:white;
+}
+
+.album-info p{
+
+    color:#b3b3b3;
+
+    font-size:18px;
+}
+
+.album-play-btn{
+
+    width:190px;
+
+    padding:15px;
+
+    margin-top:20px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#1db954;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    font-weight:600;
+}
+
+.album-play-btn:hover{
+
+    background:#1ed760;
+}
+
+.song-table{
+
+    background:#181818;
+
+    border-radius:18px;
+
+    overflow:hidden;
+}
+
+.song-header{
+
+    display:grid;
+
+    grid-template-columns:60px 1.8fr 1fr 100px;
+
+    padding:18px 30px;
+
+    color:#b3b3b3;
+
+    border-bottom:1px solid #2d2d2d;
+
+    font-weight:600;
+}
+
+.song-row{
+
+    display:grid;
+
+    grid-template-columns:60px 1.8fr 1fr 100px;
+
+    align-items:center;
+
+    padding:18px 30px;
+
+    transition:.3s;
+}
+
+.song-row:hover{
+
+    background:#242424;
+}
+
+.song-row span{
+
+    color:white;
+}
+
+.song-row button{
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#1db954;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:18px;
+}
+
+.song-row button:hover{
+
+    background:#1ed760;
+}
