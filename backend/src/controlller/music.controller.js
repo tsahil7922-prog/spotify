@@ -3,7 +3,7 @@ const albumModal = require("../model/album.model");
 const jwt = require("jsonwebtoken");
 const uploadFile = require("../services/storage.service");
 const musicModal = require("../model/music.modal");
-
+const userModal = require("../model/user.model");
 async function createMusic(req, res) {
   const { title } = req.body;
 
@@ -49,7 +49,6 @@ async function getAllAlbums(req, res) {
     .find()
     .select("title musics")
     .populate("artists", "username email role");
-    
 
   res.status(200).json({ message: "Music fetched successfully", allAlbum });
 }
@@ -59,13 +58,58 @@ async function getAlbumById(req, res) {
   const album = await albumModal
     .findById(paramId)
     .populate("artists", "username email role")
-     .populate({
+    .populate({
       path: "musics",
       select: "title url",
     });
-    // .populate("musics");
+  // .populate("musics");
 
   return res.status(200).json({ message: "Music fetched successfully", album });
+}
+
+// getting all artists
+async function getAllArtists(req, res) {
+  try {
+    const allArtist = await userModal
+      .find({ role: "artist" })
+      .select("username email role");
+    res
+      .status(200)
+      .json({ message: "Artists fetched successfully", allArtist });
+  } catch (error) {
+    console.log(error, "error in getting all artists");
+    res.status(500).json({ message: "Error in getting all artists" });
+  }
+}
+
+async function getArtistById(req, res) {
+  try {
+    const { artistId } = req.params;
+
+    const artist = await userModel
+      .findById(artistId)
+      .select("username email role");
+
+    if (!artist) {
+      return res.status(404).json({
+        message: "Artist not found",
+      });
+    }
+
+    const songs = await musicModel
+      .find({ artist: artistId })
+      .select("title url");
+
+    res.status(200).json({
+      message: "Artist fetched successfully",
+      artist,
+      songs,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
 }
 
 module.exports = {
@@ -74,4 +118,6 @@ module.exports = {
   getAllMusics,
   getAllAlbums,
   getAlbumById,
+  getAllArtists,
+  getArtistById,
 };

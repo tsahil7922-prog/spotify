@@ -30,4 +30,13 @@ router.get(
   musicController.getAlbumById,
 );
 
+// for users only to get all artist data
+router.get("/artists", authMiddleware.authUser, musicController.getAllArtists);
+
+router.get(
+  "/artists/:artistId",
+  authMiddleware.authUser,
+  musicController.getArtistById,
+);
+
 module.exports = router;
