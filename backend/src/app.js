@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const helmet = require("helmet");
+const helmet = require("helmet"); //helmet is a middleware that helps to secure your Express apps by setting various HTTP headers. It can help protect your app from some well-known web vulnerabilities by setting HTTP headers appropriately.
 const compression = require("compression");
 const morgan = require("morgan");
 const authUser = require("./routes/auth.routes");
