@@ -17,9 +17,14 @@ a{
 
 button{
   cursor:pointer;
+  border:none;
 }
 
 input,
 select{
   outline:none;
+}
+img{
+  max-width:100%;
+  display:block;
 }

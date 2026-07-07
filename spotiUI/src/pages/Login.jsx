@@ -1,10 +1,9 @@
-import { useState } from "react";
 import axios from "axios";
 import "../styles/auth.css";
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,7 +33,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       // window.location.href = "/home";
-      navigate("/home")
+      navigate("/home");
     } catch (err) {
       console.log(err);
       alert("Login Failed");
@@ -61,6 +60,10 @@ const Login = () => {
         />
 
         <button type="submit">Login</button>
+        <p className="auth-switch">
+          Don't have an account?
+          <Link to="/register"> Register</Link>
+        </p>
       </form>
     </section>
   );

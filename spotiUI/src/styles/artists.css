@@ -1,0 +1,25 @@
+.page-container {
+
+  padding: 40px;
+
+}
+
+.page-container h1 {
+
+  color: white;
+
+  font-size: 36px;
+
+  margin-bottom: 35px;
+
+}
+
+.artist-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+
+  gap: 28px;
+
+}

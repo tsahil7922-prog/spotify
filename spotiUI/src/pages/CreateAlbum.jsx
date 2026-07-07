@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/createalbum.css";
+import Navbar from "../components/Navbar";
 
 const CreateAlbum = () => {
   const [title, setTitle] = useState("");
@@ -75,6 +76,9 @@ const CreateAlbum = () => {
   };
 
   return (
+    <> 
+    <Navbar/>
+    
     <section className="create-album-page">
       <div className="album-container">
         <h1>Create Album</h1>
@@ -124,7 +128,8 @@ const CreateAlbum = () => {
   </div>
 </form>
       </div>
-    </section>
+    </section></>
+   
   );
 };
 

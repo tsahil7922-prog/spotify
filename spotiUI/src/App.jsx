@@ -9,6 +9,8 @@ import Albums from "./pages/Albums";
 import Profile from "./pages/Profile";
 import AlbumDetails from "./pages/AlbumDetails";
 import MusicPlayer from "./components/MusicPlayer";
+import ArtistProfile from "./pages/ArtistProfile";
+import Artists from "./pages/Artists";
 
 function App() {
   return (
@@ -21,6 +23,11 @@ function App() {
         <Route path="/create-album" element={<CreateAlbum />} />
         <Route path="/albums" element={<Albums />} />
         <Route path="/albums/:albumId" element={<AlbumDetails />} />
+
+        <Route path="/artists" element={<Artists />} />
+
+        <Route path="/artists/:artistId" element={<ArtistProfile />} />
+
         <Route path="/profile" element={<Profile />} />
       </Routes>
       <MusicPlayer />

@@ -1,6 +1,7 @@
-import { useState } from "react";
 import axios from "axios";
 import "../styles/auth.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -30,10 +31,11 @@ const Register = () => {
 
       console.log(res.data);
 
-      window.location.href = "/";
+      // window.location.href = "/";
+      navigate("/");
     } catch (err) {
       console.log(err);
-      
+
       alert("Registration Failed");
     }
   };
@@ -70,6 +72,11 @@ const Register = () => {
         </select>
 
         <button type="submit">Register</button>
+
+        <p className="auth-switch">
+          Already have an account?
+          <Link to="/"> Login</Link>
+        </p>
       </form>
     </section>
   );

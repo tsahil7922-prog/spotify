@@ -29,6 +29,7 @@ const Navbar = () => {
         <Link to="/home">Home</Link>
 
         <Link to="/albums">Albums</Link>
+        <Link to="/artists">Artists</Link>
 
         {user.role === "artist" && (
           <>

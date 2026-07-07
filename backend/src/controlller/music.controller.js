@@ -97,8 +97,9 @@ async function getArtistById(req, res) {
     }
 
     const songs = await musicModel
-      .find({ artist: artistId })
-      .select("title url");
+  .find({ artist: artistId })
+  .populate("artist", "username")
+  .select("title url artist");
 
     res.status(200).json({
       message: "Artist fetched successfully",
