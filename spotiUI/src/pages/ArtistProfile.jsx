@@ -24,7 +24,7 @@ const ArtistProfile = () => {
         `http://localhost:7000/api/music/artists/${artistId}`,
         {
           withCredentials: true,
-        }
+        },
       );
 
       setArtist(res?.data?.artist);
@@ -39,31 +39,34 @@ const ArtistProfile = () => {
 
   if (loading) return <Loader />;
 
+  if (!artist) {
+    return (
+      <>
+        <Navbar />
+        <h2>Artist not found.</h2>
+      </>
+    );
+  }
   return (
     <>
       <Navbar />
 
       <section className="page-container">
         <div className="artist-header">
-          <div className="artist-image">
-            🎤
-          </div>
+          <div className="artist-image">🎤</div>
 
           <div>
-            <h1>{artist.username}</h1>
+            <h1>{artist?.username}</h1>
 
-            <p>{artist.email}</p>
+            <p>{artist?.email}</p>
 
-            <h4>{songs.length} Songs</h4>
+            <h4>{songs?.length} Songs</h4>
           </div>
         </div>
 
         <div className="music-grid">
-          {songs.map((song) => (
-            <MusicCard
-              key={song._id}
-              music={song}
-            />
+          {songs?.map((song) => (
+            <MusicCard key={song._id} music={song} />
           ))}
         </div>
       </section>
