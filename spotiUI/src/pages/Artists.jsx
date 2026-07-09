@@ -3,33 +3,26 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Loader from "../components/Loader";
 import ArtistCard from "../components/ArtistCard";
-
+import { useQuery } from "@tanstack/react-query";
 const Artists = () => {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getArtists = async () => {
-    try {
-      const res = await axios.get("http://localhost:7000/api/music/artists", {
-        withCredentials: true,
-      });
+    const res = await axios.get("http://localhost:7000/api/music/artists", {
+      withCredentials: true,
+    });
 
-      setArtists(res?.data?.allArtist);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
+    return res.data.allArtist;
   };
-  useEffect(() => {
-    console.log("Artists Mounted");
-
-    getArtists();
-
-    return () => {
-      console.log("Artists Unmounted");
-    };
-  }, []);
+  const {
+    data: allArtist,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["artists"],
+    queryFn: getArtists,
+  });
 
   return (
     <>
@@ -38,11 +31,27 @@ const Artists = () => {
       <section className="page-container">
         <h1>Artists</h1>
 
-        {loading ? (
+        {/* {isPending ? (
           <Loader />
         ) : (
           <div className="artist-grid">
-            {artists?.map((artist) => (
+            {allArtist?.map((artist) => (
+              <ArtistCard key={artist._id} artist={artist} />
+            ))}
+          </div>
+        )} */}
+
+        {isPending ? (
+          <Loader />
+        ) : error ? (
+          <div className="error-message">
+            <p>
+              Failed to load artists. Please try again later.{error.message}
+            </p>
+          </div>
+        ) : (
+          <div className="artist-grid">
+            {allArtist?.map((artist) => (
               <ArtistCard key={artist._id} artist={artist} />
             ))}
           </div>
