@@ -13,7 +13,7 @@ app.use(compression()); // compress api response to reduce size of data being se
 app.use(morgan("dev")); // in console giving each api info that runs
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
   }),
 );
