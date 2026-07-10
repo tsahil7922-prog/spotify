@@ -14,6 +14,9 @@ const authApi = {
       credentials,
     );
   },
+  logout: () => {
+    return apiConfigBase.post(`${apiEndPointsConst.LOG_OUT_URL_END_POINT}`);
+  }
 };
 
 export default authApi;

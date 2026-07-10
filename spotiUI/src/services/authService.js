@@ -16,6 +16,14 @@ const authService = {
       console.error("Error in authService.login:", err);
     }
   },
+
+  logOut() {
+    try {
+      return authApi.logout();
+    } catch (err) {
+      console.error("Error in authService.logout:", err);
+    }
+  },
 };
 
 export default authService;

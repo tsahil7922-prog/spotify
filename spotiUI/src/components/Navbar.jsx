@@ -1,25 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 import axios from "axios";
+import authApi from "../api/authApi";
 const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
   const handleLogout = async () => {
-    try {
-      await axios.post(
-        "http://localhost:7000/api/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-
-      localStorage.removeItem("user");
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+    await authApi.logout();
+    localStorage.removeItem("user");
+    navigate("/");
   };
   return (
     <nav className="navbar">
