@@ -2,6 +2,8 @@ import axios from "axios";
 import "../styles/auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import authService from "../services/authService";
+import { showError } from "../../utils/errors";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -19,25 +21,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await axios.post(
-        "http://localhost:7000/api/auth/login",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
+    const res = await authService.login(formData);
 
-      console.log(res.data);
+    console.log(res.data);
 
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+    localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // window.location.href = "/home";
-      navigate("/home");
-    } catch (err) {
-      console.log(err);
-      alert("Login Failed");
-    }
+    // window.location.href = "/home";
+    navigate("/home");
   };
 
   return (
