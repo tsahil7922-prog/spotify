@@ -3,9 +3,10 @@ import "../styles/auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import authService from "../services/authService";
-import { showError } from "../../utils/errors";
+import useToast from "../hooks/useToast";
 const Login = () => {
   const navigate = useNavigate();
+  const { showToaster } = useToast();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,7 +23,7 @@ const Login = () => {
     e.preventDefault();
 
     const res = await authService.login(formData);
-
+    showToaster(res.data.message, "success");
     console.log(res.data);
 
     localStorage.setItem("user", JSON.stringify(res.data.user));

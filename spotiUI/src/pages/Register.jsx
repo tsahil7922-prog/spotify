@@ -3,7 +3,9 @@ import "../styles/auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import authService from "../services/authService";
+import useToast from "../hooks/useToast";
 const Register = () => {
+  const { showToaster } = useToast();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -22,6 +24,8 @@ const Register = () => {
     e.preventDefault();
 
     const res = await authService.register(formData);
+    showToaster(res.data.message, "success");
+
     console.log(res.data);
     navigate("/");
   };
