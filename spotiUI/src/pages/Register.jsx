@@ -2,6 +2,7 @@ import axios from "axios";
 import "../styles/auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import authService from "../services/authService";
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -9,7 +10,7 @@ const Register = () => {
     password: "",
     role: "user",
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -20,24 +21,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await axios.post(
-        "http://localhost:7000/api/auth/register",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
-
-      console.log(res.data);
-
-      // window.location.href = "/";
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-
-      alert("Registration Failed");
-    }
+    const res = await authService.register(formData);
+    console.log(res.data);
+    navigate("/");
   };
 
   return (
