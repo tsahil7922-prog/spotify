@@ -4,23 +4,19 @@ import MusicCard from "../components/MusicCard";
 import Navbar from "../components/Navbar";
 import "../styles/home.css";
 import Loader from "../components/Loader";
+import musicService  from "../services/musicService";
 const Home = () => {
   const [musics, setMusics] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getMusics = async () => {
-    try {
-      const res = await axios.get("http://localhost:7000/api/music", {
-        withCredentials: true,
-      });
-
-      setMusics(res.data.allMusics);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const getMusics = async () => {
+  try {
+    const res = await musicService.getAllMusic();
+    setMusics(res?.data?.allMusics);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     getMusics();
