@@ -8,7 +8,11 @@ async function createMusic(req, res) {
   const { title } = req.body;
 
   const file = req.file;
-
+  if (!file) {
+    return res.status(400).json({
+      message: "Music file is required",
+    });
+  }
   const result = await uploadFile(file.buffer.toString("base64"));
   const music = await musicModal.create({
     url: result.url,

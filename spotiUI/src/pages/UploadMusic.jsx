@@ -3,9 +3,12 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import "../styles/upload.css";
 import { useNavigate } from "react-router-dom";
+import useToast from "../hooks/useToast";
+import musicService from "../services/musicService";
 
 const UploadMusic = () => {
   const navigate = useNavigate();
+  const { showToaster } = useToast();
   const [title, setTitle] = useState("");
   const [music, setMusic] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -25,14 +28,9 @@ const UploadMusic = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "http://localhost:7000/api/music/upload",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
-
+      const res = await musicService.uploadMusic(formData);
+      
+      showToaster(res.data.message, "success");
       console.log(res.data);
 
       navigate("/home");
