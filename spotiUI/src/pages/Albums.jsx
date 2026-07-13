@@ -3,29 +3,28 @@ import axios from "axios";
 import AlbumCard from "../components/AlbumCard";
 import "../styles/Albums.css";
 import Navbar from "../components/Navbar";
+import musicService from "../services/musicService";
+import { useQuery } from "@tanstack/react-query";
 
 const Albums = () => {
   const [albums, setAlbums] = useState([]);
 
-  useEffect(() => {
-    fetchAlbums();
-  }, []);
-
   const fetchAlbums = async () => {
-    try {
-      const res = await axios.get("http://localhost:7000/api/music/albums", {
-        withCredentials: true,
-      });
-
-      setAlbums(res.data.allAlbum);
-    } catch (err) {
-      console.log(err);
-    }
+    const res = await musicService.getAllAlbums();
+    return res?.data?.allAlbum;
+    // setAlbums(res.data.allAlbum);
   };
 
+  const {
+    data: allAlbums,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["albums"],
+    queryFn: fetchAlbums,
+  });
   return (
     <>
-      {" "}
       <Navbar />
       <section className="albums-page">
         <div className="albums-header">
@@ -33,11 +32,19 @@ const Albums = () => {
           <p>Browse albums from artists</p>
         </div>
 
-        <div className="albums-grid">
-          {albums.map((album) => (
-            <AlbumCard key={album._id} album={album} />
-          ))}
-        </div>
+        {isPending ? (
+          <p>Loading albums...</p>
+        ) : error ? (
+          <p className="error-message">
+            Failed to load albums. Please try again later.
+          </p>
+        ) : (
+          <div className="albums-grid">
+            {allAlbums?.map((album) => (
+              <AlbumCard key={album._id} album={album} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

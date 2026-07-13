@@ -12,6 +12,15 @@ const musicService = {
     }
   },
 
+  getAllAlbums: async () => {
+    try {
+      const response = await allMusicApi.getAllAlbums();
+      return response;
+    } catch (err) {
+      console.error("Error in musicService.getAllAlbums:", err);
+    }
+  },
+
   uploadMusic: async (formData) => {
     try {
       const response = await allMusicApi.uploadMusic(formData);

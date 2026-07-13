@@ -31,16 +31,6 @@ const Artists = () => {
       <section className="page-container">
         <h1>Artists</h1>
 
-        {/* {isPending ? (
-          <Loader />
-        ) : (
-          <div className="artist-grid">
-            {allArtist?.map((artist) => (
-              <ArtistCard key={artist._id} artist={artist} />
-            ))}
-          </div>
-        )} */}
-
         {isPending ? (
           <Loader />
         ) : error ? (
