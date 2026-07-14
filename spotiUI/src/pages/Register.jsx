@@ -23,11 +23,20 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await authService.register(formData);
-    showToaster(res.data.message, "success");
+    try {
+      const res = await authService.register(formData);
+      showToaster(res?.data?.message, "success");
 
-    console.log(res.data);
-    navigate("/");
+      console.log(res.data);
+      navigate("/");
+    } catch (err) {
+      showToaster(
+        err?.response?.data?.error ||
+          err?.response?.data?.message ||
+          "Registartion failed",
+        "error",
+      );
+    }
   };
 
   return (

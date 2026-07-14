@@ -21,15 +21,22 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await authService.login(formData);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-    const res = await authService.login(formData);
-    showToaster(res.data.message, "success");
-    console.log(res.data);
-
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    // window.location.href = "/home";
-    navigate("/home");
+      // window.location.href = "/home";
+      navigate("/home");
+      showToaster(res?.data?.message, "success");
+      console.log(res?.data);
+    } catch (err) {
+      showToaster(
+        err?.response?.data?.error ||
+          err?.response?.data?.message ||
+          "Login failed",
+        "error",
+      );
+    }
   };
 
   return (
