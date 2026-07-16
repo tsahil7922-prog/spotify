@@ -39,4 +39,6 @@ router.get(
   musicController.getArtistById,
 );
 
+router.get("/search",authMiddleware.authUser,musicController.searchMusic)
+
 module.exports = router;

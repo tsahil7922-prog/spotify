@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const uploadFile = require("../services/storage.service");
 const musicModal = require("../model/music.modal");
 const userModal = require("../model/user.model");
+const userModel = require("../model/user.model");
 async function createMusic(req, res) {
   const { title } = req.body;
 
@@ -117,6 +118,85 @@ async function getArtistById(req, res) {
   }
 }
 
+async function searchMusic(req, res) {
+  try {
+    const { q } = req.query;
+
+    console.log(q, "q");
+
+    //Because someone might call empty search
+    if (!q || q.trim() === "") {
+      return res.status(400).json({
+        message: "Search keyword is required",
+      });
+    }
+
+    // artist search
+    const artists = await userModel.find({
+      username: {
+        $regex: q,
+        $options: "i",
+      },
+    });
+    const artistIds = artists.map((artist) => artist._id);
+
+    const artistSongs = await musicModal
+      .find({
+        artist: {
+          $in: artistIds,
+        },
+      })
+      .populate("artist", "username");
+
+    // search songs
+    const songs = await musicModal
+      .find({
+        title: {
+          $regex: q,
+          $options: "i",
+        },
+      })
+      .populate("artist", "username");
+
+    // search album
+    const albums = await albumModal.find({
+      title: {
+        $regex: q,
+        $options: "i",
+      },
+    });
+    // console.log(albums, "alubms");
+    const musicIds = albums.flatMap((album) => album.musics);
+    // console.log("", musicIds);
+    const albumSongs = await musicModal
+      .find({
+        _id: {
+          $in: musicIds,
+        },
+      })
+      .populate("artist", "username");
+
+    // merge both so that not getting duplicate two times
+    const allSongs = [...songs, ...artistSongs, ...albumSongs];
+    const uniqueValuesOnly = [
+      ...new Map(allSongs.map((song) => [song._id.toString(), song])).values(),
+    ];
+
+    if (uniqueValuesOnly.length === 0) {
+      return res.status(200).json({
+        message: "No results found",
+        songs: [],
+      });
+    }
+
+    return res.status(200).json({
+      message: "Search completed",
+      songs: uniqueValuesOnly,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
 module.exports = {
   createMusic,
   createAlbum,
@@ -125,4 +205,5 @@ module.exports = {
   getAlbumById,
   getAllArtists,
   getArtistById,
+  searchMusic,
 };
