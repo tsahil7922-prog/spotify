@@ -18,6 +18,12 @@ const allMusicApi = {
       formData,
     );
   },
+
+  searchItems: (search) => {
+    return apiConfigBase.get(
+      `${apiEndPointsConst.SEARCH_MUSIC_ITEMS}?q=${search}`,
+    );
+  },
 };
 
 export default allMusicApi;

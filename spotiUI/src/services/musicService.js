@@ -31,5 +31,14 @@ const musicService = {
       console.error("Error in musicService.uploadMusic:", err);
     }
   },
+
+  searchMusic: async (search) => {
+    try {
+      const res = await allMusicApi.searchItems(search);
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 export default musicService;

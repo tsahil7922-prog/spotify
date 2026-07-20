@@ -16,7 +16,13 @@ const authApi = {
   },
   logout: () => {
     return apiConfigBase.post(`${apiEndPointsConst.LOG_OUT_URL_END_POINT}`);
-  }
+  },
+
+
+refreshToken:()=>{
+   return apiConfigBase.post(`${apiEndPointsConst.REFRESH_TOKEN}`);
+}
+
 };
 
 export default authApi;

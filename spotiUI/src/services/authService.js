@@ -24,6 +24,14 @@ const authService = {
       console.error("Error in authService.logout:", err);
     }
   },
+
+  refreshToken() {
+    try {
+      return authApi.refreshToken();
+    } catch (err) {
+      console.log(err, "refrsh");
+    }
+  },
 };
 
 export default authService;

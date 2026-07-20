@@ -1,6 +1,9 @@
 const userModel = require("../model/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
+
+
 async function regiterUser(req, res) {
   const { username, email, password, role = "user" } = req.body;
   //   console.log(username, email, password);
@@ -37,13 +40,13 @@ async function regiterUser(req, res) {
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true, // This flag ensures that the cookie cannot be accessed via JavaScript, providing protection against cross-site scripting (XSS) attacks.
-    secure: true, // This flag ensures that the cookie is only sent over HTTPS connections, providing an additional layer of security.
+    secure: false, // This flag ensures that the cookie is only sent over HTTPS connections, providing an additional layer of security.
     sameSite: "strict", // This flag restricts the cookie to be sent only in a first-party context, preventing it from being sent along with cross-site requests, which can help mitigate cross-site request forgery (CSRF) attacks.
     //jwt needs a object inside which user unique id is stored and a secret key to generate the accessToken  and also we can set expiry time for the accessToken
   });
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "strict",
   });
   return res
@@ -82,13 +85,13 @@ async function loginUser(req, res) {
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "strict",
   });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "strict",
   });
   res.status(200).json({ message: "User logged in Successfully", user });
@@ -122,7 +125,7 @@ async function refreshToken(req, res) {
 
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      secure: true,
+      secure: false, // true for prod when hosted
       sameSite: "strict",
     });
 
