@@ -2,7 +2,10 @@ import { createContext, useContext, useRef, useState } from "react";
 
 const MusicContext = createContext();
 
+
 export const MusicProvider = ({ children }) => {
+  const [search, setSearch] = useState("");
+const [searchResults, setSearchResults] = useState([]);
   const audioRef = useRef();
   const [currentSong, setCurrentSong] = useState(null);
   const [playing, setPlaying] = useState(false);
@@ -40,6 +43,12 @@ export const MusicProvider = ({ children }) => {
 
         currentTime,
         setCurrentTime,
+
+        search,
+        setSearch,
+
+        searchResults,
+        setSearchResults,
       }}
     >
       {children}

@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import MusicCard from "../components/MusicCard";
 import Navbar from "../components/Navbar";
 import "../styles/home.css";
 import Loader from "../components/Loader";
 import musicService from "../services/musicService";
 import { useQuery } from "@tanstack/react-query";
+import { useMusic } from "../context/MusicContext";
 
 const Home = () => {
-  // const [musics, setMusics] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const { search, searchResults } = useMusic();
 
   const getMusics = async () => {
     const res = await musicService.getAllMusic();
@@ -17,7 +15,7 @@ const Home = () => {
   };
 
   const {
-    data: allMusics,
+    data: allMusics = [],
     isPending,
     error,
   } = useQuery({
@@ -25,27 +23,41 @@ const Home = () => {
     queryFn: getMusics,
   });
 
-  // useEffect(() => {
-  //   getMusics();
-  // }, []);
+  const isSearching = search.trim().length > 0;
+
+  const displaySongs = isSearching ? searchResults : allMusics;
 
   return (
     <>
       <Navbar />
 
       <section className="page-container">
-        <h1>Trending Music</h1>
+        <h1>{isSearching ? "Search Results" : "Trending Music"}</h1>
 
         {isPending ? (
           <Loader />
         ) : error ? (
           <div className="error-message">
-            <p>Failed to load music. Please try again later.{error.message}</p>
+            <h2>Failed to load music</h2>
+            <p>Please try again later.</p>
+          </div>
+        ) : !isSearching && allMusics.length === 0 ? (
+          <div className="empty-message">
+            <h2>No music uploaded yet 🎵</h2>
+            <p>Upload your first song to get started.</p>
+          </div>
+        ) : isSearching && searchResults.length === 0 ? (
+          <div className="empty-message">
+            <h2>No results found</h2>
+            <p>No songs matched "{search}"</p>
           </div>
         ) : (
           <div className="music-grid">
-            {allMusics?.map((music) => (
-              <MusicCard key={music._id} music={music} />
+            {displaySongs.map((music) => (
+              <MusicCard
+                key={music._id}
+                music={music}
+              />
             ))}
           </div>
         )}
